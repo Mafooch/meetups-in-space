@@ -1,0 +1,13 @@
+<h1><%= @meetup.name %></h1>
+<h5>Description: <%= @meetup.description %></h5>
+<h5>Location: <%= @meetup.location %></h5>
+
+<h2>Current members</h2>
+<% @users.each do |user| %>
+  <li><%= user.username %></li>
+<% end %>
+
+<button type="button" id="join_button">
+  Join today!
+  <a href="/join/<%= @meetup.id %>"></a>
+</button>
