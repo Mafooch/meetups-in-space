@@ -64,19 +64,17 @@ get '/new' do
 end
 
 post "/new" do
-  name = params["meetup_name"]
-  description = params["meetup_description"]
-  location = params["meetup_location"]
+  new_meetup = Meetup.new(params["new_meetup"])
 
-  if name.empty? || description.empty? || location.empty?
-  # binding.pry
-    flash[:notice] = "you must fill out all the fields!"
-    redirect '/new'
-  else
-    new_meetup = Meetup.create(name: name, description: description, location: location )
+  if new_meetup.valid?
+    new_meetup.save
     flash[:notice] = "#{new_meetup.name} created!"
     redirect "/show/#{new_meetup.id}"
+  else
+    flash[:notice] = new_meetup.errors.full_messages.join(", ")
+    redirect '/new'
   end
+
 end
 get '/auth/github/callback' do
   auth = env['omniauth.auth']
